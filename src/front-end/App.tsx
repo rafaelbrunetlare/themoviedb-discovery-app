@@ -1,0 +1,53 @@
+import { useEffect, useState } from 'react';
+import type { Movie } from '../back-end/schemas/MoviesTypes';
+import MovieItem from './components/MovieItem';
+import {
+  DEFAULT_LANGUAGE,
+  DEFAULT_PAGE,
+  DEFAULT_REGION,
+} from '../back-end/constants';
+import './app.css';
+
+export default function App() {
+  const [movies, setMovies] = useState<Movie[] | null>(null);
+  const queryParams = new URLSearchParams(window.location.search);
+  const language = queryParams.get('language') || DEFAULT_LANGUAGE;
+  const page = queryParams.get('page') || DEFAULT_PAGE;
+  const region = queryParams.get('region') || DEFAULT_REGION;
+
+  useEffect(() => {
+    fetch(
+      `/api/movies/popular?language=${language}&page=${page}&region=${region}`,
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        setMovies(data.results);
+      });
+  }, [language, page, region]);
+  return (
+    <main className="app-shell">
+      <header className="app-header">
+        <h1>Films populaires</h1>
+        <h2>
+          Films tendances en France, d'après les données de{' '}
+          <b>The Movie Database</b>
+        </h2>
+      </header>
+      <section>
+        {movies ? (
+          <ul className="movie-grid">
+            {movies.map((movie) => (
+              <li key={movie.id}>
+                <article>
+                  <MovieItem movie={movie} />
+                </article>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className="status-message">Loading...</p>
+        )}
+      </section>
+    </main>
+  );
+}
