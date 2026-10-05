@@ -1,6 +1,7 @@
 import { tmdbAccessToken } from './config';
 import { DEFAULT_LANGUAGE, DEFAULT_PAGE, DEFAULT_REGION } from './constants';
 import type {
+  MovieDetail,
   MoviesApiResponse,
   TmdbMoviesRawResponse,
 } from './schemas/MoviesTypes';
@@ -60,4 +61,36 @@ export function registerMoviesApi(app: Express): void {
       }
     },
   );
+
+  app.get('/api/movies/:id', async (req, res) => {
+    const { id } = req.params;
+    const queryParams = new URLSearchParams({
+      language: (req.query.language as string) || DEFAULT_LANGUAGE,
+    });
+
+    try {
+      const response = await fetch(
+        `https://api.themoviedb.org/3/movie/${id}?${queryParams.toString()}`,
+        {
+          headers: {
+            Authorization: `Bearer ${tmdbAccessToken}`,
+            'Content-Type': 'application/json;charset=utf-8',
+          },
+        },
+      );
+
+      if (!response.ok) {
+        res
+          .status(response.status === 404 ? 404 : 502)
+          .json({ error: 'Failed to fetch movie details' });
+        return;
+      }
+
+      const movie = (await response.json()) as MovieDetail;
+      res.json(movie);
+    } catch (error) {
+      console.error(`Error fetching movie ${id}:`, error);
+      res.status(500).json({ error: 'Failed to fetch movie details' });
+    }
+  });
 }

@@ -34,6 +34,11 @@ export type MoviesApiResponse = {
 // TypeScript type for the supported movie format used in our application, omitting 'adult' and 'video' properties from the TmdbMovie type.
 export type Movie = Omit<TmdbMovie, 'adult' | 'video'>;
 
+export type MovieDetail = Omit<Movie, 'genre_ids'> & {
+  genres: Array<{ id: number; name: string }>;
+  tagline?: string;
+};
+
 // TypeScript type for the API response when fetching popular movies, containing an array of supported Movie objects.
 export type ApiErrorResponse = {
   error: string;
