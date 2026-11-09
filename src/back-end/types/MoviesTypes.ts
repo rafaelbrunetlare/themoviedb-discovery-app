@@ -70,6 +70,11 @@ export type Genre = {
   name: string;
 };
 
+export type Country = {
+  code: string;
+  name: string;
+};
+
 // TypeScript type for the API response when fetching popular movies, containing an array of supported Movie objects.
 export type ApiErrorResponse = {
   error: string;
