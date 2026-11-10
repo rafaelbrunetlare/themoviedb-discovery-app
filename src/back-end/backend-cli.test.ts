@@ -21,8 +21,8 @@ describe('backend CLI genre commands', () => {
     rmSync(directory, { recursive: true, force: true });
   });
 
-  function csvFile(content: string): string {
-    const path = join(directory, 'genres.csv');
+  function csvFile(content: string, filename = 'genres.csv'): string {
+    const path = join(directory, filename);
     writeFileSync(path, content);
     return path;
   }
@@ -243,6 +243,157 @@ describe('backend CLI genre commands', () => {
       // Assert
       expect(logSpy).toHaveBeenCalledWith(
         `Removed 0 unused genres from database at ${resolve(path)}`,
+      );
+    });
+  });
+
+  describe('add-countries', () => {
+    it('imports and updates countries in the selected database and closes the connection', async () => {
+      // Arrange
+      const path = join(directory, 'custom-movies.sqlite');
+      const database = createDatabase(path);
+      database
+        .prepare('INSERT INTO countries (code, name) VALUES (?, ?)')
+        .run('FR', 'Old name');
+      database.close();
+      const countriesCsv = csvFile(
+        'name,code\nFrance,FR\nUnited States,US\n',
+        'countries.csv',
+      );
+      const closeSpy = vi.spyOn(DatabaseSync.prototype, 'close');
+
+      // Act
+      await runCli(['--path', path, 'add-countries', countriesCsv]);
+
+      // Assert
+      expect(closeSpy).toHaveBeenCalledOnce();
+      const resultDatabase = createDatabase(path);
+      expect(
+        resultDatabase
+          .prepare('SELECT code, name FROM countries ORDER BY code')
+          .all(),
+      ).toEqual([
+        { code: 'FR', name: 'France' },
+        { code: 'US', name: 'United States' },
+      ]);
+      resultDatabase.close();
+      expect(logSpy).toHaveBeenCalledWith(
+        `Imported 2 countries into database at ${resolve(path)}`,
+      );
+    });
+
+    it('uses the default database path when no path option is provided', async () => {
+      // Arrange
+      const path = join(directory, 'default-movies.sqlite');
+      const countriesCsv = csvFile('code,name\nFR,France\n', 'countries.csv');
+
+      // Act
+      await runCli(['add-countries', countriesCsv], path);
+
+      // Assert
+      const database = createDatabase(path);
+      expect(
+        database.prepare('SELECT code, name FROM countries').all(),
+      ).toEqual([{ code: 'FR', name: 'France' }]);
+      database.close();
+      expect(logSpy).toHaveBeenCalledWith(
+        `Imported 1 countries into database at ${resolve(path)}`,
+      );
+    });
+
+    it('validates country data before opening the database', async () => {
+      // Arrange
+      const path = join(directory, 'not-created.sqlite');
+      const countriesCsv = csvFile('code,name\nfr,France\n', 'countries.csv');
+
+      // Act and assert
+      await expect(
+        runCli(['--path', path, 'add-countries', countriesCsv]),
+      ).rejects.toThrow(
+        'Invalid country code on CSV row 2: expected two uppercase letters',
+      );
+      expect(existsSync(path)).toBe(false);
+    });
+
+    it('rolls back a failed import and closes the connection', async () => {
+      // Arrange
+      const path = join(directory, 'custom-movies.sqlite');
+      const database = createDatabase(path);
+      database.exec(`
+        CREATE TRIGGER reject_country BEFORE INSERT ON countries
+        WHEN NEW.code = 'US'
+        BEGIN
+          SELECT RAISE(ABORT, 'rejected country');
+        END;
+      `);
+      database.close();
+      const countriesCsv = csvFile(
+        'code,name\nFR,France\nUS,United States\n',
+        'countries.csv',
+      );
+      const closeSpy = vi.spyOn(DatabaseSync.prototype, 'close');
+
+      // Act and assert
+      await expect(
+        runCli(['add-countries', countriesCsv, '--path', path]),
+      ).rejects.toThrow('rejected country');
+      expect(closeSpy).toHaveBeenCalledOnce();
+      const resultDatabase = createDatabase(path);
+      expect(resultDatabase.prepare('SELECT * FROM countries').all()).toEqual(
+        [],
+      );
+      resultDatabase.close();
+    });
+  });
+
+  describe('clean-countries', () => {
+    it('removes only countries not associated with a movie and reports the count', async () => {
+      // Arrange
+      const path = join(directory, 'custom-movies.sqlite');
+      const database = createDatabase(path);
+      database
+        .prepare('INSERT INTO countries (code, name) VALUES (?, ?), (?, ?)')
+        .run('FR', 'France', 'US', 'United States');
+      database
+        .prepare(`
+          INSERT INTO movies (
+            id, title, original_title, original_language, overview, collected_at
+          ) VALUES (1, 'Movie', 'Movie', 'en', '', '2026-01-01')
+        `)
+        .run();
+      database
+        .prepare(
+          'INSERT INTO production_countries (movie_id, country_code) VALUES (?, ?)',
+        )
+        .run(1, 'FR');
+      database.close();
+      const closeSpy = vi.spyOn(DatabaseSync.prototype, 'close');
+
+      // Act
+      await runCli(['clean-countries', '--path', path]);
+
+      // Assert
+      expect(closeSpy).toHaveBeenCalledOnce();
+      const resultDatabase = createDatabase(path);
+      expect(
+        resultDatabase.prepare('SELECT code, name FROM countries').all(),
+      ).toEqual([{ code: 'FR', name: 'France' }]);
+      resultDatabase.close();
+      expect(logSpy).toHaveBeenCalledWith(
+        `Removed 1 unused countries from database at ${resolve(path)}`,
+      );
+    });
+
+    it('uses the default database path and reports when nothing is deleted', async () => {
+      // Arrange
+      const path = join(directory, 'default-movies.sqlite');
+
+      // Act
+      await runCli(['clean-countries'], path);
+
+      // Assert
+      expect(logSpy).toHaveBeenCalledWith(
+        `Removed 0 unused countries from database at ${resolve(path)}`,
       );
     });
   });

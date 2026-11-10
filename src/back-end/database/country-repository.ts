@@ -47,3 +47,21 @@ export function upsertCountries(
     throw error;
   }
 }
+
+/**
+ * Deletes countries that are not associated with any movie and returns the count.
+ */
+export function deleteUnusedCountries(database: DatabaseSync): number {
+  const result = database
+    .prepare(`
+      DELETE FROM countries
+      WHERE NOT EXISTS (
+        SELECT 1
+        FROM production_countries
+        WHERE production_countries.country_code = countries.code
+      )
+    `)
+    .run();
+
+  return Number(result.changes);
+}

@@ -3,6 +3,7 @@ import { afterEach, describe, expect, it } from 'vitest';
 import type { Country } from '../types/MoviesTypes';
 import { initializeSchema } from './schema';
 import {
+  deleteUnusedCountries,
   getCountries,
   getCountryByCode,
   upsertCountries,
@@ -109,5 +110,33 @@ describe('country repository', () => {
       code: 'FR',
       name: 'Last label',
     });
+  });
+
+  it('deletes only countries that are not associated with a movie', () => {
+    // Arrange
+    const database = createDatabase();
+    upsertCountries(database, [
+      { code: 'FR', name: 'France' },
+      { code: 'US', name: 'United States' },
+    ]);
+    database
+      .prepare(`
+        INSERT INTO movies (
+          id, title, original_title, original_language, overview, collected_at
+        ) VALUES (1, 'Movie', 'Movie', 'en', '', '2026-01-01')
+      `)
+      .run();
+    database
+      .prepare(
+        'INSERT INTO production_countries (movie_id, country_code) VALUES (?, ?)',
+      )
+      .run(1, 'FR');
+
+    // Act
+    const deletedCount = deleteUnusedCountries(database);
+
+    // Assert
+    expect(deletedCount).toBe(1);
+    expect(getCountries(database)).toEqual([{ code: 'FR', name: 'France' }]);
   });
 });

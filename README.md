@@ -86,6 +86,32 @@ L'import valide le CSV avant d'ouvrir la base et effectue les insertions et mise
 jour dans une transaction. Les commandes indiquent le nombre de genres traités et
 le chemin de la base utilisée.
 
+## Gestion des pays
+
+Le fichier `data/countries.csv` fournit un exemple de catalogue. Importez ou actualisez
+ses pays avec :
+
+```sh
+node src/back-end/backend-cli.ts add-countries ./data/countries.csv
+```
+
+Pour sélectionner une autre base SQLite, passez `--path` avant la commande :
+
+```sh
+node src/back-end/backend-cli.ts --path ./data/custom-movies.sqlite add-countries ./data/countries.csv
+```
+
+Les pays non associés à un film peuvent être supprimés avec :
+
+```sh
+node src/back-end/backend-cli.ts clean-countries
+node src/back-end/backend-cli.ts --path ./data/custom-movies.sqlite clean-countries
+```
+
+L'import valide le CSV avant d'ouvrir la base et effectue les insertions et mises à
+jour dans une transaction. Les commandes indiquent le nombre de pays traités et le
+chemin de la base utilisée.
+
 ## API locale
 
 | Méthode | Route                 | Description                                                       |
