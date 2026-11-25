@@ -56,6 +56,11 @@ Ouvrez [http://localhost:6006](http://localhost:6006). La story du tableau de
 bord présente son état sans widget ; le sélecteur de thème permet de vérifier
 les variantes claire et sombre.
 
+Le widget « Films en base » propose des stories pour le chargement, les films
+disponibles, une base vide et une erreur. Il est piloté par ses propriétés et
+utilise des nombres de démonstration ; le back-end actuel ne fournit pas encore
+de décompte de films stockés.
+
 Pour documenter un futur widget, ajoutez un fichier
 `NomDuWidget.stories.tsx` près de son composant et exportez une story pour chaque
 état pertinent, par exemple chargement, données disponibles, aucun résultat et
