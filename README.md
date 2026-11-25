@@ -78,6 +78,11 @@ déjà calculé. Les associations multiples d'un film à plusieurs pays doivent
 pas. Ses stories couvrent l'exemple (United States of America, 725 films), un
 nom long, chargement, absence de pays connu et erreur.
 
+Le widget « Film le mieux noté » reçoit un film déjà sélectionné et affiche son
+affiche, son titre, son année et sa note sur 10. Les stories couvrent le cas
+nominal (9,1 / 10), une affiche absente, le chargement, l'absence de film noté
+et l'erreur. L'affiche de démonstration est une illustration locale originale.
+
 Pour documenter un futur widget, ajoutez un fichier
 `NomDuWidget.stories.tsx` près de son composant et exportez une story pour chaque
 état pertinent, par exemple chargement, données disponibles, aucun résultat et

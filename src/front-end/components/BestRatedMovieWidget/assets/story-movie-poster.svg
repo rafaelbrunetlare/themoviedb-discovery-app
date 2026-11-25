@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 600">
+  <defs>
+    <linearGradient id="sky" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#153b5c" />
+      <stop offset="1" stop-color="#267b83" />
+    </linearGradient>
+    <linearGradient id="horizon" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#f6c978" />
+      <stop offset="1" stop-color="#e57f62" />
+    </linearGradient>
+  </defs>
+  <rect width="400" height="600" fill="url(#sky)" />
+  <circle cx="286" cy="204" r="72" fill="#f8d78e" opacity=".92" />
+  <path d="M0 355 86 274l66 70 84-112 164 151v217H0Z" fill="#183c51" />
+  <path d="m0 409 110-88 83 83 87-97 120 102v191H0Z" fill="url(#horizon)" opacity=".86" />
+  <path d="M0 475c85-31 171-32 260 0 55 20 101 21 140 9v116H0Z" fill="#102b43" />
+  <text
+    x="32"
+    y="72"
+    fill="#f5f0df"
+    font-family="Arial, sans-serif"
+    font-size="17"
+    font-weight="700"
+    letter-spacing="4"
+  >
+    STORYBOOK ORIGINAL
+  </text>
+  <text
+    x="32"
+    y="526"
+    fill="#fff9e8"
+    font-family="Arial, sans-serif"
+    font-size="31"
+    font-weight="800"
+    letter-spacing="1"
+  >
+    THE GRAND
+  </text>
+  <text
+    x="32"
+    y="565"
+    fill="#fff9e8"
+    font-family="Arial, sans-serif"
+    font-size="31"
+    font-weight="800"
+    letter-spacing="1"
+  >
+    ADVENTURE
+  </text>
+</svg>

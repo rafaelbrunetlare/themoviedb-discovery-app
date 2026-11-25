@@ -1,0 +1,116 @@
+.best-rated-movie-widget {
+  width: min(100%, 520px);
+  padding: 22px 24px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+  box-shadow: 0 8px 18px rgb(41 69 99 / 9%);
+}
+
+.best-rated-movie-widget__eyebrow {
+  margin: 0 0 8px;
+  color: var(--accent);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.best-rated-movie-widget h2 {
+  margin: 0;
+  color: var(--heading);
+  font-size: 1.1rem;
+  line-height: 1.3;
+}
+
+.best-rated-movie-widget__movie {
+  display: grid;
+  grid-template-columns: minmax(100px, 140px) minmax(0, 1fr);
+  gap: 20px;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.best-rated-movie-widget__poster {
+  overflow: hidden;
+  aspect-ratio: 2 / 3;
+  border-radius: 8px;
+  background: var(--surface-muted);
+}
+
+.best-rated-movie-widget__poster img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.best-rated-movie-widget__poster-fallback {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  min-height: 150px;
+  place-items: center;
+  padding: 12px;
+  background: linear-gradient(145deg, #26354e, #8393a8);
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 700;
+  line-height: 1.35;
+  text-align: center;
+}
+
+.best-rated-movie-widget__details {
+  min-width: 0;
+}
+
+.best-rated-movie-widget__movie-title {
+  overflow-wrap: anywhere;
+  margin: 0;
+  color: var(--ink-strong);
+  font-size: 1.2rem;
+  line-height: 1.35;
+}
+
+.best-rated-movie-widget__year {
+  margin: 8px 0 0;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+.best-rated-movie-widget__rating {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin: 18px 0 0;
+  color: var(--ink-strong);
+  font-size: 1.8rem;
+  font-weight: 800;
+}
+
+.best-rated-movie-widget__rating span:last-child {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  font-weight: 650;
+}
+
+.best-rated-movie-widget__message {
+  margin: 20px 0 0;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+@media (max-width: 480px) {
+  .best-rated-movie-widget {
+    padding: 20px;
+  }
+
+  .best-rated-movie-widget__movie {
+    grid-template-columns: minmax(86px, 112px) minmax(0, 1fr);
+    gap: 14px;
+  }
+
+  .best-rated-movie-widget__movie-title {
+    font-size: 1.05rem;
+  }
+}
