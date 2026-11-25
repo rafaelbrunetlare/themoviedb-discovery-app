@@ -44,6 +44,25 @@ Les paramètres par défaut sont la langue `fr-FR`, la région `FR` et la premi�
 
 Le serveur Express écoute sur le port `3000`. Vite sert l'interface sur le port `5173` et transmet les requêtes `/api` au serveur Express.
 
+## Storybook
+
+Storybook permet de visualiser les composants de l'interface sans lancer l'API :
+
+```sh
+npm run storybook
+```
+
+Ouvrez [http://localhost:6006](http://localhost:6006). La story du tableau de
+bord présente son état sans widget ; le sélecteur de thème permet de vérifier
+les variantes claire et sombre.
+
+Pour documenter un futur widget, ajoutez un fichier
+`NomDuWidget.stories.tsx` près de son composant et exportez une story pour chaque
+état pertinent, par exemple chargement, données disponibles, aucun résultat et
+erreur. Utilisez des données de démonstration contrôlées afin que les stories
+restent reproductibles. Pour générer une version statique de Storybook, lancez
+`npm run build-storybook` ; les fichiers sont produits dans `storybook-static/`.
+
 ## API locale
 
 | Méthode | Route                 | Description                                                       |
