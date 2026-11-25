@@ -72,6 +72,12 @@ décimales au format français sur 10. Utilisez l'état `empty` en l'absence de
 notes ; ses stories présentent les états nominal (6,78 / 10), chargement, sans
 notes et erreur.
 
+Le widget « Pays le plus représenté » reçoit le pays gagnant et son effectif
+déjà calculé. Les associations multiples d'un film à plusieurs pays doivent
+être dédupliquées avant de fournir le résultat ; le composant ne les recompte
+pas. Ses stories couvrent l'exemple (United States of America, 725 films), un
+nom long, chargement, absence de pays connu et erreur.
+
 Pour documenter un futur widget, ajoutez un fichier
 `NomDuWidget.stories.tsx` près de son composant et exportez une story pour chaque
 état pertinent, par exemple chargement, données disponibles, aucun résultat et
