@@ -1,5 +1,5 @@
-import { useState } from 'react';
 import './BestRatedMovieWidget.css';
+import MoviePoster from '../MoviePoster/MoviePoster';
 
 /**
  * Supply the already selected best-rated movie. Use null for an unavailable
@@ -20,8 +20,6 @@ export type BestRatedMovieWidgetProps =
     };
 
 export default function BestRatedMovieWidget(props: BestRatedMovieWidgetProps) {
-  const [failedPosterUrl, setFailedPosterUrl] = useState<string | null>(null);
-
   return (
     <section
       className="best-rated-movie-widget"
@@ -51,24 +49,10 @@ export default function BestRatedMovieWidget(props: BestRatedMovieWidgetProps) {
 
       {props.status === 'success' && (
         <div className="best-rated-movie-widget__movie">
-          <div className="best-rated-movie-widget__poster">
-            {props.movie.posterUrl &&
-            failedPosterUrl !== props.movie.posterUrl ? (
-              <img
-                src={props.movie.posterUrl}
-                alt={`Affiche de ${props.movie.title}`}
-                onError={() => setFailedPosterUrl(props.movie.posterUrl)}
-              />
-            ) : (
-              <div
-                className="best-rated-movie-widget__poster-fallback"
-                role="img"
-                aria-label={`Affiche indisponible pour ${props.movie.title}`}
-              >
-                Affiche indisponible
-              </div>
-            )}
-          </div>
+          <MoviePoster
+            movieTitle={props.movie.title}
+            posterUrl={props.movie.posterUrl}
+          />
           <div className="best-rated-movie-widget__details">
             <h3 className="best-rated-movie-widget__movie-title">
               {props.movie.title}

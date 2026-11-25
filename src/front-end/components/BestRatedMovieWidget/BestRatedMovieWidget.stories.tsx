@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import storyPoster from './assets/story-movie-poster.svg';
+import storyPoster from '../MoviePoster/assets/story-movie-poster.svg';
 import BestRatedMovieWidget from './BestRatedMovieWidget';
 
 const meta = {

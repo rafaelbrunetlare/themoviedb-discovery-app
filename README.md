@@ -83,6 +83,11 @@ affiche, son titre, son année et sa note sur 10. Les stories couvrent le cas
 nominal (9,1 / 10), une affiche absente, le chargement, l'absence de film noté
 et l'erreur. L'affiche de démonstration est une illustration locale originale.
 
+Le widget « Film le plus populaire » affiche l'indice de popularité du film
+fourni avec deux décimales, sans le présenter comme une note ou un nombre de
+votes. Une valeur inconnue reste explicite ; les stories incluent l'exemple
+1 036,49, l'affiche absente, le chargement et l'erreur.
+
 Pour documenter un futur widget, ajoutez un fichier
 `NomDuWidget.stories.tsx` près de son composant et exportez une story pour chaque
 état pertinent, par exemple chargement, données disponibles, aucun résultat et
