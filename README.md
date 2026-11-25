@@ -66,6 +66,12 @@ durées valides, exprimée en minutes. Si aucune durée valide n'est disponible,
 utilisez l'état `empty` plutôt que de fournir `0`. Ses stories couvrent les
 états nominal (107 min), chargement, absence de données et erreur.
 
+Le widget « Note moyenne » reçoit une note calculée en amont sur le catalogue
+complet et précise si elle est simple ou pondérée. Il affiche la note avec deux
+décimales au format français sur 10. Utilisez l'état `empty` en l'absence de
+notes ; ses stories présentent les états nominal (6,78 / 10), chargement, sans
+notes et erreur.
+
 Pour documenter un futur widget, ajoutez un fichier
 `NomDuWidget.stories.tsx` près de son composant et exportez une story pour chaque
 état pertinent, par exemple chargement, données disponibles, aucun résultat et
