@@ -61,6 +61,11 @@ disponibles, une base vide et une erreur. Il est piloté par ses propriétés et
 utilise des nombres de démonstration ; le back-end actuel ne fournit pas encore
 de décompte de films stockés.
 
+Le widget « Durée moyenne » reçoit une moyenne déjà calculée à partir des
+durées valides, exprimée en minutes. Si aucune durée valide n'est disponible,
+utilisez l'état `empty` plutôt que de fournir `0`. Ses stories couvrent les
+états nominal (107 min), chargement, absence de données et erreur.
+
 Pour documenter un futur widget, ajoutez un fichier
 `NomDuWidget.stories.tsx` près de son composant et exportez une story pour chaque
 état pertinent, par exemple chargement, données disponibles, aucun résultat et
