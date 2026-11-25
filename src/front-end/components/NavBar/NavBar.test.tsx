@@ -10,7 +10,7 @@ afterEach(cleanup);
 function renderNavBar(path: string) {
   return render(
     <MemoryRouter initialEntries={[path]}>
-      <NavBar />
+      <NavBar theme="light" onToggleTheme={() => {}} />
     </MemoryRouter>,
   );
 }
@@ -28,11 +28,35 @@ describe('NavBar', () => {
     ).toBeTruthy();
     expect(screen.getByText('TMDB Discovery')).not.toBeNull();
     const moviesLink = screen.getByRole('link', { name: 'Films populaires' });
+    const dashboardLink = screen.getByRole('link', {
+      name: 'Tableau de bord',
+    });
     const aboutLink = screen.getByRole('link', { name: 'À propos' });
     expect(moviesLink.getAttribute('href')).toBe('/movies');
+    expect(dashboardLink.getAttribute('href')).toBe('/dashboard');
     expect(aboutLink.getAttribute('href')).toBe('/about');
     expect(moviesLink.getAttribute('aria-current')).toBe('page');
+    expect(dashboardLink.getAttribute('aria-current')).toBeNull();
     expect(aboutLink.getAttribute('aria-current')).toBeNull();
+  });
+
+  it('marks Tableau de bord active on the dashboard route', () => {
+    // Arrange: render the navigation on the dashboard destination.
+
+    // Act
+    renderNavBar('/dashboard');
+
+    // Assert: the dashboard link is selected and the movies link is not.
+    expect(
+      screen
+        .getByRole('link', { name: 'Tableau de bord' })
+        .getAttribute('aria-current'),
+    ).toBe('page');
+    expect(
+      screen
+        .getByRole('link', { name: 'Films populaires' })
+        .getAttribute('aria-current'),
+    ).toBeNull();
   });
 
   it('marks À propos active on the about route', () => {
