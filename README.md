@@ -88,6 +88,13 @@ fourni avec deux décimales, sans le présenter comme une note ou un nombre de
 votes. Une valeur inconnue reste explicite ; les stories incluent l'exemple
 1 036,49, l'affiche absente, le chargement et l'erreur.
 
+Les widgets « Film le plus rentable » et « Film le moins rentable » reçoivent
+un film et un ROI déjà calculés. Ils ne calculent pas le ROI et ne classent pas
+les films. La formule et les règles d'éligibilité des budgets et recettes ne
+sont pas définies ici : elles doivent être validées et documentées avant toute
+connexion à des données réelles. Les stories utilisent uniquement des valeurs
+de démonstration ; une valeur ROI inconnue est distincte de `0`.
+
 Pour documenter un futur widget, ajoutez un fichier
 `NomDuWidget.stories.tsx` près de son composant et exportez une story pour chaque
 état pertinent, par exemple chargement, données disponibles, aucun résultat et
